@@ -9,6 +9,7 @@ Blood-Banking-System-backend/target/
 Blood-Banking-System-master/node_modules/
 Blood-Banking-System-master/dist/
 Blood-Banking-System-master/.env*
+!Blood-Banking-System-master/.env.example
 
 # IDE files
 .vscode/
