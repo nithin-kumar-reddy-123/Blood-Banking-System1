@@ -1,0 +1,111 @@
+/* Authentication layout */
+.auth-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 24px;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 480px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-form h2 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+.auth-form .subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0 0 10px;
+}
+
+/* Input Fields and Layout Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 14px 16px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.auth-form > * {
+  animation: slideUp 0.5s ease-out backwards;
+}
+.auth-form > *:nth-child(1) { animation-delay: 0.1s; }
+.auth-form > *:nth-child(2) { animation-delay: 0.2s; }
+.auth-form > *:nth-child(3) { animation-delay: 0.3s; }
+.auth-form > *:nth-child(4) { animation-delay: 0.4s; }
+.auth-form > *:nth-child(5) { animation-delay: 0.5s; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Full Width Submit Button */
+.auth-submit-btn {
+  width: 100%;
+  padding: 14px;
+  justify-content: center;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+/* Form switch navigation */
+.auth-footer {
+  text-align: center;
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.auth-link {
+  color: var(--primary);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-left: 4px;
+}
+
+.auth-link:hover {
+  text-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+  text-decoration: underline;
+}
+
+/* Responsive auth rules */
+@media (max-width: 480px) {
+  .auth-form {
+    padding: 30px 20px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

@@ -1,0 +1,343 @@
+/* Donor Container Grid */
+.donor-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Dashboard Panel Widgets */
+.donor-panel {
+  padding: 32px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.dashboard-title {
+  margin: 0 0 8px;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.dashboard-description {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.overview-card {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--surface-border);
+  transition: var(--transition);
+}
+
+.overview-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 51, 102, 0.25);
+  box-shadow: 0 10px 25px rgba(255, 51, 102, 0.05);
+}
+
+.overview-card-glow {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  top: -40px;
+  right: -40px;
+  pointer-events: none;
+  filter: blur(20px);
+}
+
+.active-donors .overview-card-glow {
+  background: radial-gradient(circle, rgba(255, 51, 102, 0.15) 0%, transparent 70%);
+}
+
+.uptime .overview-card-glow {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+}
+
+.response .overview-card-glow {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+}
+
+.overview-card span {
+  display: block;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.overview-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Donor List Section & Glass Table */
+.donor-list {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.list-header h2 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.list-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Search and Filter Inputs */
+.search-filter-section {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex-grow: 1;
+  position: relative;
+  min-width: 260px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 16px 12px 46px;
+  border-radius: var(--radius-sm);
+}
+
+.filter-box select {
+  width: 180px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+/* Glass Table Styling */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border);
+}
+
+.glass-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background: transparent;
+}
+
+.glass-table th,
+.glass-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.glass-table th {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-table tbody tr {
+  transition: var(--transition);
+}
+
+.glass-table tbody tr:hover {
+  background: rgba(255, 51, 102, 0.02);
+}
+
+.glass-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Custom Table Components */
+.donor-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.donor-avatar-small {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+}
+
+.blood-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 99px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Specific styling for Blood groups */
+.blood-badge.group-apos,
+.blood-badge.group-abpos,
+.blood-badge.group-bpos,
+.blood-badge.group-opos {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.08);
+}
+
+.blood-badge.group-aneg,
+.blood-badge.group-abneg,
+.blood-badge.group-bneg,
+.blood-badge.group-oneg {
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  color: #fb7185;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.1);
+}
+
+.cell-icon {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-right: 6px;
+}
+
+.text-pink {
+  color: var(--primary) !important;
+}
+
+.location-cell {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.contact-info-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.88rem;
+}
+
+.contact-info-cell div {
+  display: flex;
+  align-items: center;
+}
+
+.email-row {
+  color: var(--text-muted);
+}
+
+.username-tag {
+  font-family: monospace;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.empty-cell {
+  text-align: center;
+  padding: 48px !important;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Form container overrides if reached fallback */
+.auth-container {
+  padding: 80px 24px;
+}
+
+.auth-form {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 auto;
+}
+
+.auth-form h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.auth-form button {
+  margin-top: 10px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .dashboard-header button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .search-filter-section {
+    flex-direction: column;
+  }
+  
+  .filter-box select {
+    width: 100%;
+  }
+}

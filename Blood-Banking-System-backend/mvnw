@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+# ----------------------------------------------------------------------------
+# Maven Wrapper
+# ----------------------------------------------------------------------------
+
+PRG="$0"
+while [ -h "$PRG" ]; do
+  ls=$(ls -ld "$PRG")
+  link=$(expr "$ls" : '.*-> \(.*\)$')
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG=$(dirname "$PRG")"/"$link"
+  fi
+done
+
+SAVED="$(pwd)"
+cd "$(dirname "$PRG")"
+cd ..
+
+MVNW_HOME="$(pwd)"
+cd "$SAVED"
+
+if [ -z "$MAVEN_PROJECTBASEDIR" ]; then
+  MAVEN_PROJECTBASEDIR="$(pwd)"
+fi
+
+MAVEN_WRAPPER_JAR="$MVNW_HOME/.mvn/wrapper/maven-wrapper.jar"
+MAVEN_WRAPPER_PROPERTIES="$MVNW_HOME/.mvn/wrapper/maven-wrapper.properties"
+JAVA_CMD="java"
+
+exec "$JAVA_CMD" -cp "$MAVEN_WRAPPER_JAR" org.apache.maven.wrapper.MavenWrapperMain "$@"

@@ -1,0 +1,13 @@
+com\bloodbank\controller\DonorController.class
+com\bloodbank\controller\GlobalExceptionHandler.class
+com\bloodbank\BloodBankingSystemApplication.class
+com\bloodbank\controller\RequestController.class
+com\bloodbank\entity\Donor.class
+com\bloodbank\repository\DonorRepository.class
+com\bloodbank\config\WebConfig.class
+com\bloodbank\entity\BloodRequest.class
+com\bloodbank\service\DonorService.class
+com\bloodbank\service\EmailService$1.class
+com\bloodbank\repository\BloodRequestRepository.class
+com\bloodbank\service\EmailService.class
+com\bloodbank\service\BloodRequestService.class
