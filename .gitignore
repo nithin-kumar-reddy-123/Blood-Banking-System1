@@ -1,0 +1,20 @@
+# Java/Maven
+Blood-Banking-System-backend/target/
+**/target/
+*.log
+*.tmp
+*.class
+
+# Node
+Blood-Banking-System-master/node_modules/
+Blood-Banking-System-master/dist/
+Blood-Banking-System-master/.env*
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# system files
+.DS_Store
+Thumbs.db
