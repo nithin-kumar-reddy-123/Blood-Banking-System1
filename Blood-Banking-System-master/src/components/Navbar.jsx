@@ -14,44 +14,46 @@ const Navbar = () => {
 
   return (
     <nav className="navbar glass-panel">
-      <div className="nav-left">
-        <div className="nav-logo" onClick={() => navigate("/")}>
-          <FaHeartbeat className="logo-icon" />
-          <span className="logo-text">Pulse<span className="text-gradient">Share</span></span>
+      <div className="nav-inner">
+        <div className="nav-left">
+          <div className="nav-logo" onClick={() => navigate("/")}>
+            <FaHeartbeat className="logo-icon" />
+            <span className="logo-text">Pulse<span className="text-gradient">Share</span></span>
+          </div>
+          <div className="nav-links">
+            <button 
+              type="button" 
+              className={`nav-link ${isActive("/") ? "active" : ""}`} 
+              onClick={() => navigate("/")}
+            >
+              Home
+            </button>
+            <button 
+              type="button" 
+              className={`nav-link ${isActive("/request") ? "active" : ""}`} 
+              onClick={() => navigate("/request")}
+            >
+              Requests
+            </button>
+            <button 
+              type="button" 
+              className={`nav-link ${isActive("/contact") ? "active" : ""}`} 
+              onClick={() => navigate("/contact")}
+            >
+              Contact
+            </button>
+          </div>
         </div>
-        <div className="nav-links">
-          <button 
-            type="button" 
-            className={`nav-link ${isActive("/") ? "active" : ""}`} 
-            onClick={() => navigate("/")}
-          >
-            Home
-          </button>
-          <button 
-            type="button" 
-            className={`nav-link ${isActive("/request") ? "active" : ""}`} 
-            onClick={() => navigate("/request")}
-          >
-            Requests
-          </button>
-          <button 
-            type="button" 
-            className={`nav-link ${isActive("/contact") ? "active" : ""}`} 
-            onClick={() => navigate("/contact")}
-          >
-            Contact
-          </button>
+        <div className="nav-buttons">
+          {loggedIn ? (
+            <UserMenu />
+          ) : (
+            <>
+              <button onClick={() => navigate("/login")} className="nav-btn btn-secondary">Login</button>
+              <button onClick={() => navigate("/register")} className="nav-btn btn-primary">Register</button>
+            </>
+          )}
         </div>
-      </div>
-      <div className="nav-buttons">
-        {loggedIn ? (
-          <UserMenu />
-        ) : (
-          <>
-            <button onClick={() => navigate("/login")} className="nav-btn btn-secondary">Login</button>
-            <button onClick={() => navigate("/register")} className="nav-btn btn-primary">Register</button>
-          </>
-        )}
       </div>
     </nav>
   );
