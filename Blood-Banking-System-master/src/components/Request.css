@@ -15,6 +15,25 @@
   gap: 28px;
 }
 
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.glass-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.glass-table thead th {
+  position: sticky;
+  top: 0;
+  background: rgba(7, 12, 25, 0.96);
+  backdrop-filter: blur(8px);
+  z-index: 2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .request-header {
   display: flex;
   justify-content: space-between;
