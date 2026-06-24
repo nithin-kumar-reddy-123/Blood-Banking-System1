@@ -2,21 +2,25 @@ package com.bloodbank.controller;
 
 import com.bloodbank.entity.Donor;
 import com.bloodbank.service.DonorService;
+import com.bloodbank.security.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/donors")
 public class DonorController {
 
     private final DonorService donorService;
+    private final JwtUtil jwtUtil;
 
-    public DonorController(DonorService donorService) {
+    public DonorController(DonorService donorService, JwtUtil jwtUtil) {
         this.donorService = donorService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping
@@ -41,7 +45,7 @@ public class DonorController {
         if (donorService.registerDonor(donor).isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Username or email already exists"));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Donor registered successfully"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Registration successful. Please verify your email."));
     }
 
     @PostMapping("/login")
@@ -53,20 +57,60 @@ public class DonorController {
             return ResponseEntity.badRequest().body(Map.of("error", "Username and password are required"));
         }
 
+        Optional<Donor> donorOptional = donorService.findByUsername(username);
+        if (donorOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
+        }
+
+        Donor donor = donorOptional.get();
+        if (!donor.isEmailVerified()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Email not verified. Please check your inbox."));
+        }
+
         return donorService.login(username, password)
-                .map(donor -> {
+                .map(found -> {
+                    String token = jwtUtil.generateToken(found.getUsername());
                     Map<String, Object> response = new java.util.HashMap<>();
-                    response.put("id", donor.getId());
-                    response.put("name", donor.getName());
-                    response.put("location", donor.getLocation());
-                    response.put("phone", donor.getPhone());
-                    response.put("bloodGroup", donor.getBloodGroup());
-                    response.put("username", donor.getUsername());
-                    response.put("email", donor.getEmail());
-                    response.put("role", donor.getRole());
+                    response.put("token", token);
+                    response.put("id", found.getId());
+                    response.put("name", found.getName());
+                    response.put("location", found.getLocation());
+                    response.put("phone", found.getPhone());
+                    response.put("bloodGroup", found.getBloodGroup());
+                    response.put("username", found.getUsername());
+                    response.put("email", found.getEmail());
+                    response.put("role", found.getRole());
+                    response.put("credits", found.getCredits());
+                    response.put("walletBalance", found.getWalletBalance());
                     return ResponseEntity.ok(response);
                 })
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials")));
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyEmail(@RequestParam("token") String token) {
+        if (token == null || token.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Verification token is missing."));
+        }
+        token = token.trim();
+        boolean verified = donorService.verifyEmail(token);
+        if (verified) {
+            return ResponseEntity.ok(Map.of("message", "Email successfully verified."));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Invalid or expired verification token."));
+    }
+
+    @PostMapping("/resend-verification")
+    public ResponseEntity<?> resendVerification(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        if (email == null || email.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email is required."));
+        }
+        boolean resent = donorService.resendVerificationEmail(email);
+        if (!resent) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Unable to resend verification. Email may already be verified or not registered."));
+        }
+        return ResponseEntity.ok(Map.of("message", "Verification email resent. Please check your inbox."));
     }
 
     @DeleteMapping("/{id}")
@@ -76,6 +120,65 @@ public class DonorController {
             return ResponseEntity.ok(Map.of("message", "Donor deleted successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Error deleting donor"));
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateDonor(@PathVariable("id") Long id, @RequestBody Donor donor) {
+        try {
+            return donorService.updateDonor(id, donor)
+                    .map(updated -> ResponseEntity.ok(Map.of(
+                            "id", updated.getId(),
+                            "name", updated.getName(),
+                            "location", updated.getLocation(),
+                            "phone", updated.getPhone(),
+                            "bloodGroup", updated.getBloodGroup(),
+                            "username", updated.getUsername(),
+                            "email", updated.getEmail(),
+                            "role", updated.getRole()
+                    )))
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Username or email already in use")));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Error updating donor"));
+        }
+    }
+
+    @GetMapping("/dashboard-stats")
+    public ResponseEntity<?> getDashboardStats() {
+        try {
+            org.springframework.security.core.Authentication authentication = 
+                org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
+            }
+            String username = authentication.getName();
+            return ResponseEntity.ok(donorService.getDashboardStats(username));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Error fetching dashboard statistics"));
+        }
+    }
+
+    @PostMapping("/redeem")
+    public ResponseEntity<?> redeemReward(@RequestBody Map<String, String> payload) {
+        try {
+            org.springframework.security.core.Authentication authentication = 
+                org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not authenticated"));
+            }
+            String username = authentication.getName();
+            String rewardType = payload.get("rewardType");
+            if (rewardType == null || rewardType.isBlank()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "rewardType is required"));
+            }
+            Map<String, Object> result = donorService.redeemReward(username, rewardType);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Error redeeming reward"));
         }
     }
 }

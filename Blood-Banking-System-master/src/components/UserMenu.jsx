@@ -14,7 +14,7 @@ const UserMenu = () => {
 
   return (
     <div className="user-menu">
-      <div className="user-badge" onClick={() => navigate("/donar")} title="Go to Dashboard">
+      <div className="user-badge" onClick={() => navigate("/profile")} title="Edit Profile">
         <div className="user-avatar">
           {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
         </div>

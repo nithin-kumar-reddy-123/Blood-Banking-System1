@@ -27,6 +27,7 @@ public class BloodRequest {
     private String status = "PENDING";
     
     private Long acceptedByDonorId;
+    private LocalDateTime acceptedAt;
 
     public BloodRequest() {
         this.createdAt = LocalDateTime.now();
@@ -120,5 +121,13 @@ public class BloodRequest {
 
     public void setAcceptedByDonorId(Long acceptedByDonorId) {
         this.acceptedByDonorId = acceptedByDonorId;
+    }
+
+    public LocalDateTime getAcceptedAt() {
+        return acceptedAt;
+    }
+
+    public void setAcceptedAt(LocalDateTime acceptedAt) {
+        this.acceptedAt = acceptedAt;
     }
 }

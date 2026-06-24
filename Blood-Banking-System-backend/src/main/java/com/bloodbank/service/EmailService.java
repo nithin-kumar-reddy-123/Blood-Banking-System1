@@ -3,6 +3,7 @@ package com.bloodbank.service;
 import com.bloodbank.entity.BloodRequest;
 import com.bloodbank.entity.Donor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,11 +20,14 @@ public class EmailService {
     @Autowired(required = false)
     private JavaMailSender mailSender;
 
+    @Value("${spring.mail.username}")
+    private String fromAddress;
+
     public void sendEmail(String to, String subject, String body) {
         try {
             if (mailSender != null) {
                 SimpleMailMessage message = new SimpleMailMessage();
-                // Let Gmail automatically set the "From" based on the authenticated user
+                message.setFrom(fromAddress);
                 message.setTo(to);
                 message.setSubject(subject);
                 message.setText(body);

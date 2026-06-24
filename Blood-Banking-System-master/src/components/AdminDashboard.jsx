@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import { FaTrash, FaCheck, FaTimes, FaUsers, FaTint } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import api from "../api/client";
 import "./AdminDashboard.css";
 
@@ -10,6 +12,28 @@ const AdminDashboard = () => {
   const [donors, setDonors] = useState([]);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const chartData = [
+    { name: "Jan", donors: 10, requests: 5 },
+    { name: "Feb", donors: 25, requests: 15 },
+    { name: "Mar", donors: 45, requests: 35 },
+    { name: "Apr", donors: 60, requests: 40 },
+    { name: "May", donors: 85, requests: 60 },
+    { name: "Jun", donors: 110, requests: 90 },
+  ];
+
+  const tableVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const rowVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
 
   useEffect(() => {
     fetchData();
@@ -100,6 +124,30 @@ const AdminDashboard = () => {
           <div className="loading-spinner">Loading...</div>
         ) : (
           <>
+            <div style={{ height: "300px", width: "100%", marginBottom: "40px" }}>
+              <h3 style={{ marginBottom: "20px" }}>Growth Overview</h3>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorDonors" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorRequests" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ff3366" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#ff3366" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="name" stroke="#9ca3af" />
+                  <YAxis stroke="#9ca3af" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <Tooltip contentStyle={{ backgroundColor: 'rgba(7, 12, 25, 0.9)', borderColor: 'rgba(255,255,255,0.1)' }} />
+                  <Area type="monotone" dataKey="donors" stroke="#3b82f6" fillOpacity={1} fill="url(#colorDonors)" />
+                  <Area type="monotone" dataKey="requests" stroke="#ff3366" fillOpacity={1} fill="url(#colorRequests)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
             {activeTab === "donors" && (
               <div>
                 <h3>Registered Donors ({donors.length})</h3>
@@ -115,9 +163,9 @@ const AdminDashboard = () => {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <motion.tbody variants={tableVariants} initial="hidden" animate="show">
                       {donors.map(donor => (
-                        <tr key={donor.id}>
+                        <motion.tr key={donor.id} variants={rowVariants}>
                           <td>{donor.id}</td>
                           <td>{donor.name}</td>
                           <td><span className="blood-badge">{donor.bloodGroup}</span></td>
@@ -130,9 +178,9 @@ const AdminDashboard = () => {
                               </button>
                             )}
                           </td>
-                        </tr>
+                        </motion.tr>
                       ))}
-                    </tbody>
+                    </motion.tbody>
                   </table>
                 </div>
               </div>
@@ -153,9 +201,9 @@ const AdminDashboard = () => {
                         <th>Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <motion.tbody variants={tableVariants} initial="hidden" animate="show">
                       {requests.map(req => (
-                        <tr key={req.id}>
+                        <motion.tr key={req.id} variants={rowVariants}>
                           <td>{req.id}</td>
                           <td>{req.name}</td>
                           <td><span className="blood-badge">{req.bloodGroup}</span></td>
@@ -176,9 +224,9 @@ const AdminDashboard = () => {
                               <FaTrash />
                             </button>
                           </td>
-                        </tr>
+                        </motion.tr>
                       ))}
-                    </tbody>
+                    </motion.tbody>
                   </table>
                 </div>
               </div>

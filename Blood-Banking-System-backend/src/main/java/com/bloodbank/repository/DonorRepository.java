@@ -9,6 +9,8 @@ import java.util.Optional;
 @Repository
 public interface DonorRepository extends JpaRepository<Donor, Long> {
     Optional<Donor> findByUsername(String username);
+    Optional<Donor> findByVerificationToken(String verificationToken);
+    Optional<Donor> findByEmail(String email);
     Optional<Donor> findByUsernameAndPassword(String username, String password);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);

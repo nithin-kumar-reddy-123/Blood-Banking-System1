@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FaSearch, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaUser, FaPlus, FaTimes, FaCheck } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FaSearch, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaUser, FaPlus, FaTimes, FaCheck, FaTrash } from "react-icons/fa";
 import api from "../api/client";
 import { AuthContext } from "./AuthContext";
+import MapWrapper from "./MapWrapper";
 import "./Request.css";
 
 const Request = () => {
+  const navigate = useNavigate();
   const { loggedIn, user } = useContext(AuthContext);
   const [requestData, setRequestData] = useState({
     name: "",
@@ -39,6 +42,11 @@ const Request = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!requestData.name || !requestData.bloodGroup || !requestData.phone || !requestData.email || !requestData.location || !requestData.reason) {
+      alert("Please fill in all fields to submit the request.");
+      return;
+    }
 
     try {
       const res = await api.post("/requests", requestData);
@@ -79,6 +87,18 @@ const Request = () => {
     }
   };
 
+  const handleDelete = async (requestId) => {
+    if (!window.confirm("Are you sure you want to delete this request?")) return;
+    try {
+      await api.delete(`/requests/${requestId}`);
+      setRequests(requests.filter((req) => req.id !== requestId));
+      alert("Request deleted successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete request.");
+    }
+  };
+
   // Filter requests locally
   const filteredRequests = requests.filter((req) => {
     const matchesSearch =
@@ -97,14 +117,20 @@ const Request = () => {
         <div className="request-header">
           <div>
             <h2 className="text-gradient">Blood Requests</h2>
-            <p>Submit urgent requests and review active blood needs across the network.</p>
+            <p>
+              Patients, families, and hospitals can submit blood requests without registering.
+              Registered donors can log in to accept and manage active requests.
+            </p>
           </div>
           <button className="btn-primary" onClick={() => setShowModal(true)}>
             Request Blood <FaPlus />
           </button>
-        </div>
-
-        <div className="search-filter-section">
+            {!loggedIn && (
+              <p className="auth-info" style={{ marginTop: "1rem", color: "#fff" }}>
+                If you are a donor, log in to accept requests.
+                If you are requesting blood, you may submit a request directly here.
+              </p>
+            )}
           <div className="search-box">
             <FaSearch className="search-icon" />
             <input
@@ -128,6 +154,8 @@ const Request = () => {
             </select>
           </div>
         </div>
+
+        <MapWrapper items={filteredRequests} itemType="request" />
 
         <div className="table-container">
           <table className="glass-table">
@@ -182,17 +210,35 @@ const Request = () => {
                     {loggedIn && (
                       <td>
                         {(!req.status || req.status.toUpperCase() === "PENDING") ? (
-                          <button 
-                            className="btn-primary" 
-                            style={{ padding: '8px 14px', fontSize: '0.8rem' }}
-                            onClick={() => handleAccept(req.id)}
-                          >
-                            <FaCheck /> Accept
-                          </button>
+                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            <button 
+                              className="btn-primary" 
+                              style={{ padding: '8px 14px', fontSize: '0.8rem' }}
+                              onClick={() => handleAccept(req.id)}
+                            >
+                              <FaCheck /> Accept
+                            </button>
+                            <button 
+                              className="btn-primary" 
+                              style={{ padding: '8px 14px', fontSize: '0.8rem', backgroundColor: '#e74c3c' }}
+                              onClick={() => handleDelete(req.id)}
+                            >
+                              <FaTrash /> Delete
+                            </button>
+                          </div>
                         ) : (
-                          <span className="text-muted" style={{ fontSize: '0.85rem' }}>
-                            {req.status.toUpperCase() === "ACCEPTED" ? "Being Handled" : "Completed"}
-                          </span>
+                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            <span className="text-muted" style={{ fontSize: '0.85rem' }}>
+                              {req.status.toUpperCase() === "ACCEPTED" ? "Being Handled" : "Completed"}
+                            </span>
+                            <button 
+                              className="btn-primary" 
+                              style={{ padding: '8px 14px', fontSize: '0.8rem', backgroundColor: '#e74c3c' }}
+                              onClick={() => handleDelete(req.id)}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
                         )}
                       </td>
                     )}

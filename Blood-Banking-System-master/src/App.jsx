@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import PageTransition from "./components/PageTransition";
 import Home from "./components/Home";
 import Donar from "./components/Donar";
 import Request from "./components/Request";
-import Contact from "./components/Contact";
+import DonorDirectory from "./components/DonorDirectory";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import VerifyEmail from "./components/VerifyEmail";
+import AIHelp from "./components/AIHelp";
+import Profile from "./components/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./components/AdminDashboard";
 
 const App = () => {
   const [toast, setToast] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     let timer;
@@ -56,33 +62,45 @@ const App = () => {
         </div>
       )}
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/contact" element={<Contact />} />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+          <Route path="/donors" element={<PageTransition><DonorDirectory /></PageTransition>} />
 
-        {/* Protected Routes */}
-        <Route
-          path="/donar"
-          element={
-            <ProtectedRoute>
-              <Donar />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/request" element={<Request />} />
-        <Route 
-          path="/admin" 
-          element={
-            <ProtectedRoute>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } 
-        />
+          {/* Protected Routes */}
+          <Route
+            path="/donar"
+            element={
+              <ProtectedRoute>
+                <PageTransition><Donar /></PageTransition>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/request" element={<PageTransition><Request /></PageTransition>} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <PageTransition><Profile /></PageTransition>
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute>
+                <PageTransition><AdminDashboard /></PageTransition>
+              </ProtectedRoute>
+            } 
+          />
 
-        {/* Auth Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+          {/* Auth Routes */}
+          <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+          <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+          <Route path="/verify-email" element={<PageTransition><VerifyEmail /></PageTransition>} />
+          <Route path="/ai-assistant" element={<PageTransition><AIHelp /></PageTransition>} />
+        </Routes>
+      </AnimatePresence>
     </>
   );
 };

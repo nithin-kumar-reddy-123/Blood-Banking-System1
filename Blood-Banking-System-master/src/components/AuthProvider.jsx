@@ -16,8 +16,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (loggedIn && user) {
       localStorage.setItem("bloodbank_user", JSON.stringify(user));
+      if (user.token) {
+        localStorage.setItem("bloodbank_token", user.token);
+      }
     } else {
       localStorage.removeItem("bloodbank_user");
+      localStorage.removeItem("bloodbank_token");
     }
   }, [loggedIn, user]);
 
@@ -25,6 +29,7 @@ export const AuthProvider = ({ children }) => {
     setLoggedIn(false);
     setUser(null);
     localStorage.removeItem("bloodbank_user");
+    localStorage.removeItem("bloodbank_token");
   };
 
   return (

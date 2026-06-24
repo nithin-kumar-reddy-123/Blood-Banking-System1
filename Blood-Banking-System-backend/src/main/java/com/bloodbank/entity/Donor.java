@@ -24,7 +24,11 @@ public class Donor {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
+    private boolean emailVerified = false;
+    private String verificationToken;
     private String role = "DONOR";
+    private Integer credits = 0;
+    private Double walletBalance = 0.0;
 
     public Donor() {
     }
@@ -103,11 +107,43 @@ public class Donor {
         this.email = email;
     }
 
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Integer getCredits() {
+        return credits != null ? credits : 0;
+    }
+
+    public void setCredits(Integer credits) {
+        this.credits = credits != null ? credits : 0;
+    }
+
+    public Double getWalletBalance() {
+        return walletBalance != null ? walletBalance : 0.0;
+    }
+
+    public void setWalletBalance(Double walletBalance) {
+        this.walletBalance = walletBalance != null ? walletBalance : 0.0;
     }
 }

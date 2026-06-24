@@ -1,0 +1,397 @@
+/* ============================================================
+   LUXURY PULSESHARE BLACK CARD
+   ============================================================ */
+.pulse-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 250px;
+  border-radius: 20px;
+  background: #000;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin: 0 auto;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.pulse-card:hover {
+  transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
+  box-shadow: -10px 30px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.pulse-card-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: 
+    linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%),
+    radial-gradient(circle at 100% 0%, rgba(212,175,55,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(212,175,55,0.1) 0%, transparent 50%);
+  z-index: -1;
+}
+
+.pulse-card-content {
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pulse-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pulse-card-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.pulse-card-logo {
+  color: #ef4444;
+  font-size: 1.5rem;
+}
+
+.pulse-card-tier {
+  color: #d4af37;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.pulse-card-chip {
+  margin-top: 15px;
+  width: 45px;
+  height: 35px;
+  background: linear-gradient(135deg, #e5e7eb, #9ca3af);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+}
+
+.chip-icon {
+  color: #4b5563;
+  font-size: 1.5rem;
+}
+
+.pulse-card-balance {
+  margin-top: auto;
+  margin-bottom: 15px;
+}
+
+.pulse-card-balance .balance-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.pulse-card-balance .balance-amount {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  display: block;
+}
+
+.pulse-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.pulse-card-number {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+}
+
+.pulse-card-holder {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.pulse-card-holder .holder-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.pulse-card-holder .holder-name {
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+}
+
+.pulse-card-shine {
+  position: absolute;
+  top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.7s;
+}
+
+.pulse-card:hover .pulse-card-shine {
+  left: 150%;
+}
+
+/* ============================================================
+   CLASSICAL DIPLOMA STYLES
+   ============================================================ */
+.diploma-frame {
+  position: relative;
+  background: #fdfbf7;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  color: #333;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.diploma-corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #d4af37;
+}
+
+.diploma-corner-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.diploma-corner-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.diploma-corner-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+.diploma-corner-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+.diploma-inner {
+  border: 2px solid #e5e5e5;
+  padding: 50px 40px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.diploma-header {
+  margin-bottom: 30px;
+}
+
+.diploma-crest {
+  font-size: 3.5rem;
+  color: #d4af37;
+  margin-bottom: 15px;
+}
+
+.diploma-org {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #666;
+  margin: 0;
+}
+
+.diploma-rule {
+  width: 60px;
+  height: 2px;
+  background: #d4af37;
+  margin: 15px auto;
+}
+
+.diploma-title {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 2.8rem;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.diploma-body {
+  margin-bottom: 40px;
+}
+
+.diploma-preamble {
+  font-style: italic;
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+.diploma-recipient {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 3rem;
+  color: #b8860b;
+  margin: 0;
+}
+
+.diploma-underline {
+  width: 80%;
+  height: 1px;
+  background: #ccc;
+  margin: 10px auto 25px;
+}
+
+.diploma-citation {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.diploma-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.diploma-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.diploma-detail-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.diploma-detail-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 1px;
+  margin-top: 5px;
+}
+
+.diploma-seal {
+  position: relative;
+}
+
+.seal-ring {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #b8860b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.seal-center {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px dashed #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.seal-award-icon {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.seal-verified {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+}
+
+.diploma-signatures {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.diploma-sig {
+  text-align: center;
+}
+
+.sig-line {
+  width: 150px;
+  height: 1px;
+  background: #333;
+  margin-bottom: 10px;
+}
+
+.sig-name {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+}
+
+/* Override overrides from Donar.css to ensure modal acts fine */
+.certificate-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 10, 20, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.certificate-modal {
+  width: 100%;
+  max-width: 900px;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.certificate-print-area {
+  background: #f0f0f0;
+  padding: 40px;
+  color: #333;
+}
+
+/* ============================================================
+   PRINT OVERRIDES
+   ============================================================ */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .diploma-frame, .diploma-frame * {
+    visibility: visible;
+  }
+  .diploma-frame {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

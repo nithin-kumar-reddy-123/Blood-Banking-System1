@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
-import { FaHeartbeat } from "react-icons/fa";
+import { ThemeContext } from "./ThemeContext";
+import { FaHeartbeat, FaSun, FaMoon } from "react-icons/fa";
 import UserMenu from "./UserMenu";
 import "./Home.css";
 
 const Navbar = () => {
   const { loggedIn } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,14 +39,30 @@ const Navbar = () => {
             </button>
             <button 
               type="button" 
-              className={`nav-link ${isActive("/contact") ? "active" : ""}`} 
-              onClick={() => navigate("/contact")}
+              className={`nav-link ${isActive("/donors") ? "active" : ""}`} 
+              onClick={() => navigate("/donors")}
             >
-              Contact
+              Donors
+            </button>
+            <button 
+              type="button" 
+              className={`nav-link ${isActive("/ai-assistant") ? "active" : ""}`} 
+              onClick={() => navigate("/ai-assistant")}
+            >
+              AI Help
             </button>
           </div>
         </div>
-        <div className="nav-buttons">
+        <div className="nav-buttons" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <button 
+            type="button" 
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            style={{ fontSize: '1.2rem', color: 'var(--text)', background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex' }}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? <FaSun /> : <FaMoon />}
+          </button>
           {loggedIn ? (
             <UserMenu />
           ) : (

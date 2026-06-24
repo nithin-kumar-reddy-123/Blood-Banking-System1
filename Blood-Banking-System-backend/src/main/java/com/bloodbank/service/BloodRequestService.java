@@ -39,8 +39,13 @@ public class BloodRequestService {
             Donor donor = donorRepository.findById(donorId)
                     .orElseThrow(() -> new RuntimeException("Donor not found"));
             
+            if (!donor.getBloodGroup().equalsIgnoreCase(request.getBloodGroup())) {
+                throw new RuntimeException("Blood type is not matched");
+            }
+            
             request.setStatus("ACCEPTED");
             request.setAcceptedByDonorId(donorId);
+            request.setAcceptedAt(java.time.LocalDateTime.now());
             BloodRequest updatedRequest = requestRepository.save(request);
             
             emailService.sendAcceptanceEmail(updatedRequest, donor);
@@ -55,8 +60,19 @@ public class BloodRequestService {
 
     public BloodRequest updateRequestStatus(Long id, String status) {
         return requestRepository.findById(id).map(request -> {
+            String oldStatus = request.getStatus();
             request.setStatus(status);
-            return requestRepository.save(request);
+            BloodRequest saved = requestRepository.save(request);
+            
+            if ("FULFILLED".equalsIgnoreCase(status) && !"FULFILLED".equalsIgnoreCase(oldStatus)) {
+                if (request.getAcceptedByDonorId() != null) {
+                    donorRepository.findById(request.getAcceptedByDonorId()).ifPresent(donor -> {
+                        donor.setCredits(donor.getCredits() + 100);
+                        donorRepository.save(donor);
+                    });
+                }
+            }
+            return saved;
         }).orElseThrow(() -> new RuntimeException("Blood request not found"));
     }
 }

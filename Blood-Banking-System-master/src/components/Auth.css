@@ -32,6 +32,17 @@
   margin: 0 0 10px;
 }
 
+.auth-info {
+  background: rgba(16, 185, 129, 0.08);
+  color: #d1fae5;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  text-align: center;
+  margin: 0 auto 8px;
+}
+
 /* Input Fields and Layout Groups */
 .form-group {
   display: flex;
